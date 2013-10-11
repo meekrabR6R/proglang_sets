@@ -21,15 +21,26 @@ val test2_d = number_in_month([(2010,2,3),(2011,2,4),(2013,2,10)],2) = 3
 val test3_a = number_in_months([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = 3
 val test3_b = number_in_months([(2011,1,28),(2012,5,2),(2001,2,1),(2013,3,12)],[1,2,3,5]) = 4
 val test3_c = number_in_months([(2012,8,2),(2011,5,3)],[1,2]) = 0
+
+val test4_a = dates_in_month([(2012,2,28),(2013,12,1)],2) = [(2012,2,28)]
+val test4_b = dates_in_month([(2012,1,2),(2010,1,20),(2011,1,15)],1) =
+  [(2012,1,2),(2010,1,20),(2011,1,15)]
+val test4_c = dates_in_month([(2010,12,2),(1999,11,1)],3) = []
+
+val test5_a = dates_in_months([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)]
+val test5_b = dates_in_months([(2010,1,20),(2011,1,21),(2010,2,1)],[1,2]) =
+  [(2010,1,20),(2011,1,21),(2010,2,1)]
+val test5_c = dates_in_months([(2011,11,1),(2001,2,12)],[3,4,5]) = []
+
+val test6_a = get_nth(["hi", "there", "how", "are", "you"], 2) = "there"
+val test6_b = get_nth(["howdy", "friend", "I", "am", "fine"], 1) = "howdy"
+val test6_c = get_nth(["howdy", "friend", "I", "am", "fine"], 3) = "I"
+val test6_d = get_nth(["howdy", "friend", "I", "am", "fine"], 4) = "am"
+val test6_e = get_nth(["howdy", "friend", "I", "am", "fine"], 5) = "fine"
+
+val test7_a = date_to_string((2013, 6, 1)) = "June 1, 2013"
+val test7_b = date_to_string((1984, 5, 4)) = "May 4, 1984"
 (*
-val test4 = dates_in_month([(2012,2,28),(2013,12,1)],2) = [(2012,2,28)]
-
-val test5 = dates_in_months([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)]
-
-val test6 = get_nth(["hi", "there", "how", "are", "you"], 2) = "there"
-
-val test7 = date_to_string((2013, 6, 1)) = "June 1, 2013"
-
 val test8 = number_before_reaching_sum(10, [1,2,3,4,5]) = 3
 
 val test9 = what_month(70) = 3
