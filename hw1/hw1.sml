@@ -36,9 +36,28 @@ fun get_nth(words : string list, n : int) =
   else get_nth(tl words, n-1)
 
 (* Problem 7 *)
-fun date_to_string(date : (int*int*int)) = let 
-  val months = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"]
+fun date_to_string(date : (int*int*int)) = 
+  let 
+    val months = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"]
   in
     get_nth(months, #2 date)^" "^Int.toString(#3 date)^", "^Int.toString(#1 date)
-end
+  end
+
+(* Problem 8 *)
+fun number_before_reaching_sum(sum : int, nums : int list) =
+  let
+    fun sum_iter(count : int, curr_sum : int, curr_list : int list) =
+      if (curr_sum + hd curr_list) >= sum then count
+      else sum_iter(count+1, curr_sum+(hd curr_list), tl curr_list)
+  in
+    sum_iter(0, 0, nums)
+  end
+
+(* Problem 9 *)
+fun what_month(days : int) =
+  let
+    val months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  in
+    number_before_reaching_sum(days, months)+1
+  end
