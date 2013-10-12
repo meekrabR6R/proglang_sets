@@ -61,3 +61,19 @@ fun what_month(days : int) =
   in
     number_before_reaching_sum(days, months)+1
   end
+
+(* Problem 10 *)
+fun month_range(day1 : int, day2 : int) =
+  if day1 > day2 then [] 
+  else what_month(day1)::month_range(day1+1,day2)
+
+(* Problem 11 *)
+fun oldest(dates : (int*int*int) list) =
+  if null dates then NONE
+  else 
+    let val tl_ans = oldest(tl dates)
+    in
+      if isSome tl_ans andalso is_older(valOf tl_ans, hd dates)
+      then tl_ans
+      else SOME (hd dates)
+    end  
