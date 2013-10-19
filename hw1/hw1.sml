@@ -2,12 +2,10 @@
 
 (* Problem 1 *)
 fun is_older(d1 : int*int*int, d2 : int*int*int) = 
-  if ((#1 d1 > #1 d2) orelse ((#1 d1 = #1 d2) andalso 
-     ((#2 d1 > #2 d2) orelse ((#2 d1 = #2 d2) andalso
-     ((#3 d1 > #3 d2) orelse (#3 d1 = #3 d2)))))) 
-  then false
-  else true
-
+  not(((#1 d1 > #1 d2) orelse ((#1 d1 = #1 d2) andalso 
+      ((#2 d1 > #2 d2) orelse ((#2 d1 = #2 d2) andalso
+      ((#3 d1 > #3 d2) orelse (#3 d1 = #3 d2))))))) 
+  
 (* Problem 2 *)
 fun number_in_month(dates : (int*int*int) list, month : int) =
   if null dates then 0
@@ -37,8 +35,7 @@ fun get_nth(words : string list, n : int) =
 
 (* Problem 7 *)
 fun date_to_string(date : (int*int*int)) = 
-  let 
-    val months = ["January", "February", "March", "April", "May", "June",
+  let val months = ["January", "February", "March", "April", "May", "June",
                   "July", "August", "September", "October", "November", "December"]
   in
     get_nth(months, #2 date)^" "^Int.toString(#3 date)^", "^Int.toString(#1 date)
@@ -76,4 +73,57 @@ fun oldest(dates : (int*int*int) list) =
       if isSome tl_ans andalso is_older(valOf tl_ans, hd dates)
       then tl_ans
       else SOME (hd dates)
-    end  
+    end 
+
+(* ---- Challenge Problems ---- *)
+
+(* Helper Function *)
+fun is_in_list(x : int, xs : int  list) =
+  if null xs then false
+  else if x=(hd xs) then true
+  else is_in_list(x, tl xs)
+
+(* Helper Function *)
+fun remove_dups(old_list : int list) =
+  let
+    fun remove_helper(ol : int list, nl : int list) =
+      if null ol then nl
+      else if not(is_in_list(hd ol, tl ol)) then remove_helper(tl ol, (hd ol)::nl)
+      else remove_helper(tl ol, nl)
+  in
+    remove_helper(old_list, [])
+  end
+
+(* Problem 12a *)
+fun number_in_months_challenge(dates : (int*int*int) list, months : int list) =
+  if null months then 0
+  else number_in_months(dates,remove_dups months)
+
+(* Problem 12b *)
+fun dates_in_months_challenge(dates : (int*int*int) list, months : int list) =
+  if null months then []
+  else 
+    let
+      val new_months = remove_dups months
+    in  
+      dates_in_month(dates, hd new_months)@dates_in_months_challenge(dates, tl new_months)
+    end
+
+(* Problem 13 *)
+fun reasonable_date(date : (int*int*int)) =
+  let
+    fun is_leap_year(year : int) = 
+      ((year mod 400 = 0) orelse (year mod 4 = 0 andalso not(year mod 100 = 0))) 
+      
+    fun get_nth(month_list : int list, n : int) =
+      if n=1 then hd month_list
+      else get_nth(tl month_list, n-1)  
+  
+    val months = [31, (if is_leap_year(#1 date) then 29 else 28), 31, 30, 31,
+                  30, 31, 31, 30, 31, 30, 31] 
+  in
+       not(((#2 date > 0 andalso #2 date <= 12) andalso 
+           ((#3 date) > get_nth(months, #2 date))) orelse  
+            (#1 date <= 0 orelse #3 date <= 0 orelse 
+             #2 date <= 0 orelse #2 date > 12))
+  end

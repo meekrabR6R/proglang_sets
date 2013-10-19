@@ -52,6 +52,21 @@ val test9_d = what_month(40) = 2
 val test9_e = what_month(350) = 12
 
 val test10_a = month_range(31, 34) = [1,2,2,2]
-
 val test11_a = oldest([(2012,2,28),(2011,3,31),(2011,4,28)]) = SOME (2011,3,31)
 
+val test12a_a =
+  number_in_months_challenge([(2012,3,1),(2013,1,1),(2010,1,11)],[3,3,1]) = 3
+val test12a_b = number_in_months_challenge([(2001,2,5),(2012,7,3),(2001,2,4)],[2,2,2]) = 2
+
+val test12b_a = dates_in_months_challenge([(2012,1,4), (2011,1,3)],[1,1]) = [(2012,1,4),(2011,1,3)]
+
+val test13_a = reasonable_date((1984,5,4)) = true
+val test13_b = reasonable_date((1600,2,29)) = true
+val test13_c = reasonable_date((800,2,29)) = true
+val test13_d = not (reasonable_date((1999,2,29))) = true
+val test13_e = reasonable_date((1984,2,29)) = true
+val test13_f = not (reasonable_date((1600,2,30))) = true
+val test13_g = not (reasonable_date((~100, 2, 30))) = true
+val test13_h = not (reasonable_date((1200, 1, 0))) = true
+val test13_i = not (reasonable_date((1112, ~2, 12))) = true
+val test13_j = not (reasonable_date((1922, 13, 23))) = true

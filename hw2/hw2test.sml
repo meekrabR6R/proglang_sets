@@ -34,17 +34,31 @@ val test6_c = card_value((Clubs, Queen)) = 10
 val test6_d = card_value((Clubs, Jack)) = 10
 val test6_e = card_value((Clubs, Ace)) = 11
 
-(*
-val test7 = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
+val test7_a = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
+val test7_b = remove_card([(Spades,King),(Hearts,Queen)],(Hearts,Queen),IllegalMove) = [(Spades,King)]
+val test7_c = (remove_card([(Diamonds, Num 3)],(Clubs,Jack),IllegalMove) handle
+IllegalMove => [(Diamonds, Num 3)]) = [(Diamonds, Num 3)] 
 
-val test8 = all_same_color([(Hearts, Ace), (Hearts, Ace)]) = true
+val test8_a = all_same_color([(Hearts, Ace), (Hearts, Ace)]) = true
+val test8_b = all_same_color([(Spades, King), (Hearts, Queen)]) = false
+val test8_c = all_same_color([(Diamonds, Ace), (Hearts, Ace)]) = true
+val test8_d = all_same_color([(Spades, Ace), (Clubs, Ace)]) = true
+val test8_e = all_same_color([(Spades, Ace), (Spades, Ace)]) = true
 
-val test9 = sum_cards([(Clubs, Num 2),(Clubs, Num 2)]) = 4
+val test9_a = sum_cards([(Clubs, Num 2),(Clubs, Num 2)]) = 4
+val test9_b = sum_cards([(Clubs, Num 2),(Clubs, Ace)]) = 13
+val test9_c = sum_cards([(Clubs, Num 2),(Clubs, Queen)]) = 12
+val test9_d = sum_cards([(Clubs, Num 2),(Clubs, King)]) = 12
+val test9_e = sum_cards([(Clubs, Num 2),(Clubs, Jack)]) = 12
 
-val test10 = score([(Hearts, Num 2),(Clubs, Num 4)],10) = 4
+val test10_a = score([(Hearts, Num 2),(Clubs, Num 4)],10) = 4
+val test10_b = score([(Hearts, Num 2),(Clubs, Num 4)],3) = 9
+val test10_c = score([(Hearts, Num 2),(Hearts, Num 4)],10) = 2
+val test10_d = score([(Spades, Num 2),(Clubs, Num 4)],3) = 4
 
 val test11 = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
 
+(*
 val test12 = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
                        [Draw,Draw,Draw,Draw,Draw],
                        42)

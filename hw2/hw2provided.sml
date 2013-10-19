@@ -9,7 +9,7 @@ fun same_string(s1 : string, s2 : string) =
 (* put your solutions for problem 1 here *)
 
 (* Problem 1 *)
-fun all_except_option(s : string, sl : string list) = 
+fun all_except_option(s, sl) = 
   case sl of
     [] => NONE
    |s'::sl' => 
@@ -19,7 +19,7 @@ fun all_except_option(s : string, sl : string list) =
            |SOME lst => SOME(s'::lst)  
 
 (* Problem 2 *)
-fun get_substitutions1(substitutions : (string list) list, s : string) =
+fun get_substitutions1(substitutions, s) =
   case substitutions of
     [] => []
    |sub::sub_list => case all_except_option(s, sub) of
@@ -27,7 +27,7 @@ fun get_substitutions1(substitutions : (string list) list, s : string) =
                       |SOME lst => lst@get_substitutions1(sub_list, s)
 
 (* Problem 3 *)
-fun get_substitutions2(substitutions : (string list) list, s : string) =
+fun get_substitutions2(substitutions, s) =
   let 
     fun get_sub_iter(subs : (string list) list, acc : string list) =
       case subs of
@@ -41,7 +41,7 @@ fun get_substitutions2(substitutions : (string list) list, s : string) =
 
 (* Problem 4 *)
 type name = { first:string, middle:string, last:string }
-fun similar_names(substitutions : (string list) list, full_name : name) =
+fun similar_names(substitutions, full_name) =
   let 
     val { first:string, middle:string, last:string }  = full_name
     fun sim_iter(subs: string list, acc: name list) =
@@ -65,12 +65,59 @@ exception IllegalMove
 (* put your solutions for problem 2 here *)
 
 (* Problem 5 *)
-fun card_color(curr_card : card) = 
+fun card_color(curr_card) = 
   case curr_card of
     (s,r) => if s=Clubs orelse s=Spades then Black else Red
 
 (* Problem 6 *)
-fun card_value(curr_card : card) = 
+fun card_value(curr_card) = 
   case curr_card of
     (s, Num r) => r
    |(s, r) => if r=Ace then 11 else 10
+
+(* Problem 7 *)
+fun remove_card(cs, c, e) =
+  case cs of
+    [] => raise e
+   |c'::cs' => 
+     if c=c' then cs'
+     else c'::remove_card(cs',c,e)
+
+(* Problem 8 *)
+fun all_same_color(cs) =
+ case cs of
+   [] => true
+  |c'::cs' => case cs' of
+               [] => true
+              |c''::cs'' => 
+                if card_color(c'')=card_color(c') then all_same_color(cs'') 
+                else false 
+
+(* Problem 9 *)
+fun sum_cards(cs) =
+  let
+    fun sum_iter(curr_cards, acc) =
+      case curr_cards of
+        [] => acc
+       |(s, Num r)::crds => sum_iter(crds,acc+r)
+       |(s, r)::crds => 
+         if r=Ace
+         then sum_iter(crds,acc+11)
+         else sum_iter(crds,acc+10)
+  in sum_iter(cs, 0)
+  end
+
+(* Problem 10 *)
+fun score(cs, goal) =
+ let
+   val sum = sum_cards(cs) 
+   val prelim_score = 
+   if sum > goal then (3*(sum-goal))
+   else (goal-sum)
+ in
+   if not(all_same_color(cs)) then prelim_score
+   else (prelim_score div 2)
+ end
+
+(* Problem 11 *)
+fun officiate(cs, ms, goal) = 0
