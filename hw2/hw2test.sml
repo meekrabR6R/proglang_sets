@@ -7,8 +7,7 @@ use "hw2provided.sml";
 val test1_a = all_except_option("string", ["string"]) = SOME []
 val test1_b = all_except_option("buddy", ["friend","pal"]) = NONE
 val test1_c = all_except_option("guy", []) = NONE
-val test1_d = all_except_option("cupcake", ["brownie","cake","cupcake","pie"]) =
-  SOME ["brownie","cake","pie"]
+val test1_d = all_except_option("cupcake", ["brownie","cake","cupcake","pie"]) = SOME ["brownie","cake","pie"]
 
 val test2_a = get_substitutions1([["foo"],["there"]], "foo") = []
 val test2_b = get_substitutions1([["foo","bar"],["bar","pub"],["soap","shampoo","bar"]],"bar") = ["foo","pub","soap","shampoo"]
@@ -20,8 +19,8 @@ val test3_c = get_substitutions2([["Fred","Fredrick"],["Elizabeth","Betty"],["Fr
 
 
 val test4_a = similar_names([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]], {first="Fred", middle="W", last="Smith"}) =
-	    [{first="Fred", last="Smith", middle="W"}, {first="Fredrick", last="Smith", middle="W"},
-	     {first="Freddie", last="Smith", middle="W"}, {first="F", last="Smith", middle="W"}]
+	                    [{first="Fred", last="Smith", middle="W"}, {first="Fredrick", last="Smith", middle="W"},
+	                     {first="Freddie", last="Smith", middle="W"}, {first="F", last="Smith", middle="W"}]
 
 val test5_a = card_color((Clubs, Num 2)) = Black
 val test5_b = card_color((Diamonds, Num 3)) = Red
@@ -36,8 +35,7 @@ val test6_e = card_value((Clubs, Ace)) = 11
 
 val test7_a = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
 val test7_b = remove_card([(Spades,King),(Hearts,Queen)],(Hearts,Queen),IllegalMove) = [(Spades,King)]
-val test7_c = (remove_card([(Diamonds, Num 3)],(Clubs,Jack),IllegalMove) handle
-IllegalMove => [(Diamonds, Num 3)]) = [(Diamonds, Num 3)] 
+val test7_c = (remove_card([(Diamonds, Num 3)],(Clubs,Jack),IllegalMove) handle IllegalMove => [(Diamonds, Num 3)]) = [(Diamonds, Num 3)] 
 
 val test8_a = all_same_color([(Hearts, Ace), (Hearts, Ace)]) = true
 val test8_b = all_same_color([(Spades, King), (Hearts, Queen)]) = false
