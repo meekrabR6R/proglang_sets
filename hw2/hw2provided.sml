@@ -64,3 +64,13 @@ exception IllegalMove
 
 (* put your solutions for problem 2 here *)
 
+(* Problem 5 *)
+fun card_color(curr_card : card) = 
+  case curr_card of
+    (s,r) => if s=Clubs orelse s=Spades then Black else Red
+
+(* Problem 6 *)
+fun card_value(curr_card : card) = 
+  case curr_card of
+    (s, Num r) => r
+   |(s, r) => if r=Ace then 11 else 10
