@@ -120,4 +120,16 @@ fun score(cs, goal) =
  end
 
 (* Problem 11 *)
-fun officiate(cs, ms, goal) = 0
+fun officiate(cs, ms, goal) =
+  let 
+    fun off_iter(held_cards, curr_cards, curr_moves) = 
+      case curr_moves of
+        [] => score(held_cards,goal)
+       |(Discard c)::cms => off_iter(remove_card(held_cards, c,IllegalMove),curr_cards,cms)
+       |Draw::cms => case curr_cards of
+                       [] => score(held_cards,goal)
+                      |c::cs => if sum_cards(c::held_cards) > goal
+                                then score(c::held_cards,goal)
+                                else off_iter(c::held_cards,cs,cms) 
+  in off_iter([],cs,ms)
+  end

@@ -55,13 +55,11 @@ val test10_c = score([(Hearts, Num 2),(Hearts, Num 4)],10) = 2
 val test10_d = score([(Spades, Num 2),(Clubs, Num 4)],3) = 4
 
 val test11 = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
-
-(*
 val test12 = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
                        [Draw,Draw,Draw,Draw,Draw],
                        42)
              = 3
-
+(*
 val test13 = ((officiate([(Clubs,Jack),(Spades,Num(8))],
                          [Draw,Discard(Hearts,Jack)],
                          42);
