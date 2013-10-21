@@ -90,7 +90,7 @@ fun all_same_color(cs) =
   |c'::cs' => case cs' of
                [] => true
               |c''::cs'' => 
-                if card_color(c'')=card_color(c') then all_same_color(cs'') 
+                if card_color(c'')=card_color(c') then all_same_color(cs') 
                 else false 
 
 (* Problem 9 *)

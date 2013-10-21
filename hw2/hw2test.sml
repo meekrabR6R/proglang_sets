@@ -41,7 +41,8 @@ val test8_a = all_same_color([(Hearts, Ace), (Hearts, Ace)]) = true
 val test8_b = all_same_color([(Spades, King), (Hearts, Queen)]) = false
 val test8_c = all_same_color([(Diamonds, Ace), (Hearts, Ace)]) = true
 val test8_d = all_same_color([(Spades, Ace), (Clubs, Ace)]) = true
-val test8_e = all_same_color([(Spades, Ace), (Spades, Ace)]) = true
+val test8_e = all_same_color([(Spades, Ace), (Spades, Ace), (Clubs, King)]) = true
+val test8_f = all_same_color([(Spades, Ace), (Clubs, Num 3), (Diamonds, Queen)]) = false
 
 val test9_a = sum_cards([(Clubs, Num 2),(Clubs, Num 2)]) = 4
 val test9_b = sum_cards([(Clubs, Num 2),(Clubs, Ace)]) = 13
@@ -59,11 +60,9 @@ val test12 = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
                        [Draw,Draw,Draw,Draw,Draw],
                        42)
              = 3
-(*
+
 val test13 = ((officiate([(Clubs,Jack),(Spades,Num(8))],
                          [Draw,Discard(Hearts,Jack)],
                          42);
                false) 
               handle IllegalMove => true)
-             
-*)           
