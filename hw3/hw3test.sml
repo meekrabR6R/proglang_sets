@@ -5,11 +5,14 @@
 
 use "hw3provided.sml";
 
-val test1 = only_capitals ["A","B","C"] = ["A","B","C"]
+val test1_a = only_capitals ["A","B","C"] = ["A","B","C"]
+val test1_b = only_capitals ["a","b","c"] = []
+val test1_c = only_capitals ["Q","Z","x","Y","p"] = ["Q","Z","Y"]
+val test1_d = only_capitals ["Hello","goodbye","WHY"] = ["Hello","WHY"]
 
+val test2_a = longest_string1_a ["A","bc","C"] = "bc"
+val test2_b = longest_string1_b ["howdy","crabcanon"] = "crabcanon"
 (*
-val test2 = longest_string1 ["A","bc","C"] = "bc"
-
 val test3 = longest_string2 ["A","bc","C"] = "bc"
 
 val test4a= longest_string3 ["A","bc","C"] = "bc"

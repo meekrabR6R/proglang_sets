@@ -35,4 +35,11 @@ datatype typ = Anything
 	     | Datatype of string
 
 (**** you can put all your code here ****)
-fun only_capitals(words : string list) = ["a","b"]
+
+(* Problem 1 *)
+fun only_capitals(words : string list) =
+  let fun f s = Char.isUpper(String.sub(s,0))
+  in List.filter(f) words end
+
+(* Problem 2 *)
+fun longest_string(words : string list) =
