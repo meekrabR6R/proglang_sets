@@ -46,16 +46,20 @@ fun longest_string1(words : string list) =
   List.foldl (fn (x,y) => if (size x > size y) then x else y) (hd words) (tl words)
 
 (* Problem 3 *)
-fun longest_string2(words: string list) =
+fun longest_string2(words : string list) =
   List.foldl (fn (x,y) => if(size x >= size y) then x else y) (hd words) (tl
   words)
 
 (* Problem 4 *)
-fun longest_string_helper(f, words) = 
-  List.foldl (fn (x,y) => if f(size x, size y) then x else y) (hd words) (tl words) 
+fun longest_string_helper(f) (words : string list) = 
+  List.foldl (fn (x,y) => if f(size x, size y) then x else y) (hd words) (tl words)  
 
-fun longest_string3(words: string list) = 
-  longest_string_helper((fn (x,y) => x > y), words)
+val longest_string3 = longest_string_helper(fn (x,y) => x > y)
 
-fun longest_string4(words: string list) =
-  longest_string_helper((fn (x,y) => x >= y), words) 
+val longest_string4= longest_string_helper(fn (x,y) => x >= y)
+
+(* Problem 5 *)
+val longest_capitalized = longest_string_helper(fn (x,y) => x > y) o only_capitals
+
+(* Problem 6 *)
+fun rev_string(word : string) = (String.implode o List.rev o String.explode) word  
