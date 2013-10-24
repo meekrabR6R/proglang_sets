@@ -10,13 +10,23 @@ val test1_b = only_capitals ["a","b","c"] = []
 val test1_c = only_capitals ["Q","Z","x","Y","p"] = ["Q","Z","Y"]
 val test1_d = only_capitals ["Hello","goodbye","WHY"] = ["Hello","WHY"]
 
-val test2_a = longest_string1_a ["A","bc","C"] = "bc"
-val test2_b = longest_string1_b ["howdy","crabcanon"] = "crabcanon"
+val test2_a = longest_string1 ["A","bc","C"] = "bc"
+val test2_b = longest_string1 ["howdy","crabcanon"] = "crabcanon"
+val test2_c = longest_string1 ["superfabulous","supersmablous"] = "superfabulous"
+
+val test3_a = longest_string2 ["A","bc","C"] = "bc"
+val test3_b = longest_string2 ["howdy","crabcanon"] = "crabcanon" 
+val test3_c = longest_string2 ["superfabulous", "supersmablous"] = "supersmablous"
+
+val test4a_a = longest_string3 ["A","bc","C"] = "bc"
+val test4a_b = longest_string3 ["howdy","crabcanon"] = "crabcanon"
+val test4a_c = longest_string3 ["superfabulous","supersmablous"] = "superfabulous"
+
+val test4b_a = longest_string4 ["A","bc","C"] = "bc"
+val test4b_b = longest_string4 ["howdy","crabcanon"] = "crabcanon"
+val test4b_c = longest_string4 ["superfabulous","supersmablous"] = "supersmablous"
+
 (*
-val test3 = longest_string2 ["A","bc","C"] = "bc"
-
-val test4a= longest_string3 ["A","bc","C"] = "bc"
-
 val test4b= longest_string4 ["A","B","C"] = "C"
 
 val test5 = longest_capitalized ["A","bc","C"] = "A";

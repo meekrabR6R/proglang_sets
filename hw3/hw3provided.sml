@@ -42,4 +42,20 @@ fun only_capitals(words : string list) =
   in List.filter(f) words end
 
 (* Problem 2 *)
-fun longest_string(words : string list) =
+fun longest_string1(words : string list) = 
+  List.foldl (fn (x,y) => if (size x > size y) then x else y) (hd words) (tl words)
+
+(* Problem 3 *)
+fun longest_string2(words: string list) =
+  List.foldl (fn (x,y) => if(size x >= size y) then x else y) (hd words) (tl
+  words)
+
+(* Problem 4 *)
+fun longest_string_helper(f, words) = 
+  List.foldl (fn (x,y) => if f(size x, size y) then x else y) (hd words) (tl words) 
+
+fun longest_string3(words: string list) = 
+  longest_string_helper((fn (x,y) => x > y), words)
+
+fun longest_string4(words: string list) =
+  longest_string_helper((fn (x,y) => x >= y), words) 
