@@ -62,4 +62,4 @@ val longest_string4= longest_string_helper(fn (x,y) => x >= y)
 val longest_capitalized = longest_string_helper(fn (x,y) => x > y) o only_capitals
 
 (* Problem 6 *)
-fun rev_string(word : string) = String.implode o List.rev o String.explode word  
+fun rev_string(word : string) = (String.implode o List.rev o String.explode) word  

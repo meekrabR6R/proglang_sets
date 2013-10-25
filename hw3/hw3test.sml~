@@ -31,8 +31,8 @@ val test5_a = longest_capitalized ["A","bc","C"] = "A";
 val test5_b = longest_capitalized ["Epistemology", "Phenomenological"] = "Phenomenological"
 val test5_c = longest_capitalized ["Hello", "Olleh"] = "Hello"
 val test5_d = longest_capitalized ["abcde", "Howdy", "fghijkl", "Sowdy", "mnop"] = "Howdy"
-val test6_a = rev_string "abc" = "cba";
 
+val test6_a = rev_string "abc" = "cba"
 (*
 val test7 = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
 

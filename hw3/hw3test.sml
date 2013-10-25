@@ -33,9 +33,10 @@ val test5_c = longest_capitalized ["Hello", "Olleh"] = "Hello"
 val test5_d = longest_capitalized ["abcde", "Howdy", "fghijkl", "Sowdy", "mnop"] = "Howdy"
 
 val test6_a = rev_string "abc" = "cba"
-(*
-val test7 = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
 
+val test7_a = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
+
+(*
 val test8 = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
 
 val test9a = count_wildcards Wildcard = 1
