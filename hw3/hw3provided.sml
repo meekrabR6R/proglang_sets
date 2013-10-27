@@ -65,8 +65,48 @@ val longest_capitalized = longest_string_helper(fn (x,y) => x > y) o only_capita
 fun rev_string(word : string) = (String.implode o List.rev o String.explode) word 
 
 (* Problem 7 *)
-fun first_answer f xs = 
-  case f x of
-    NONE => raise NoAnswer
-    SOME v => v
-    _::xs' => f xs'
+fun first_answer f xs =
+  case xs of
+    [] => raise NoAnswer
+   |x::xs' => case f x of
+                SOME x' => x'
+               | _ => first_answer f xs'
+       
+(* Problem 8 *)
+fun all_answers f xs =
+  let
+    fun all_helper(curr_xs, acc) =
+      case curr_xs of
+        [] => SOME acc
+       |x::xs' => case f x of
+                    NONE => NONE
+                   |SOME x => all_helper(xs', acc@x)
+  in all_helper(xs, []) end 
+
+(* Problem 9 *)
+
+(* a *)
+fun count_wildcards p = g (fn x => 1) (fn y => 0) p
+
+(* b *)
+fun count_wild_and_variable_lengths p = g (fn x => 1) (fn y => String.size y) p
+
+(* c *)
+fun count_some_var(s, p) = g (fn x => 0) (fn y => if y=s then 1 else 0) p
+
+(* Problem 10 *)
+fun check_pat(p) =
+  let
+    fun lister pat =
+      case pat of
+        Variable x => [x]
+       |TupleP ps => List.foldl (fn (p',i) => (lister p') @ i) [] ps
+       | _ => [] 
+
+    fun compare(curr_strings) =
+      case curr_strings of
+        [] => true
+       |x::xs => if List.exists (fn y => y=x) xs then false else compare(xs)  
+  in
+    compare(lister p)
+  end
