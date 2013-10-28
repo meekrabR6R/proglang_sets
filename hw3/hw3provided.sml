@@ -43,16 +43,15 @@ fun only_capitals(words : string list) =
 
 (* Problem 2 *)
 fun longest_string1(words : string list) = 
-  List.foldl (fn (x,y) => if (size x > size y) then x else y) (hd words) (tl words)
+  List.foldl (fn (x,y) => if (size x > size y) then x else y) "" words
 
 (* Problem 3 *)
 fun longest_string2(words : string list) =
-  List.foldl (fn (x,y) => if(size x >= size y) then x else y) (hd words) (tl
-  words)
+  List.foldl (fn (x,y) => if(size x >= size y) then x else y) "" words
 
 (* Problem 4 *)
 fun longest_string_helper(f) (words : string list) = 
-  List.foldl (fn (x,y) => if f(size x, size y) then x else y) (hd words) (tl words)  
+  List.foldl (fn (x,y) => if f(size x, size y) then x else y) "" words  
 
 val longest_string3 = longest_string_helper(fn (x,y) => x > y)
 
@@ -110,3 +109,24 @@ fun check_pat(p) =
   in
     compare(lister p)
   end
+
+(* Problem 11 *)
+fun match(v, p) = 
+ case (v, p) of
+   (_,Wildcard) => SOME []
+  |(Unit, UnitP) => SOME []
+  |(Const x2, ConstP x1) => if x1=x2 then SOME [] 
+                            else NONE
+  |(v', Variable s) => SOME [(s,v')]
+  |(Tuple vs, TupleP ps) => if (List.length vs = List.length ps) 
+                            then all_answers match(ListPair.zip (vs,ps)) 
+                            else NONE
+  |(Constructor(s2,v'),ConstructorP(s1,p')) => if s1=s2 
+                                               then match(v',p') 
+                                               else NONE
+  |_ => NONE
+
+
+(* Problem 12 *)
+fun first_match v ps = 
+  SOME (first_answer (fn p => match(v,p)) ps) handle NoAnswer => NONE

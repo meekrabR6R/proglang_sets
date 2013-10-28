@@ -13,19 +13,23 @@ val test1_d = only_capitals ["Hello","goodbye","WHY"] = ["Hello","WHY"]
 val test2_a = longest_string1 ["A","bc","C"] = "bc"
 val test2_b = longest_string1 ["howdy","crabcanon"] = "crabcanon"
 val test2_c = longest_string1 ["superfabulous","supersmablous"] = "superfabulous"
+val test2_d = longest_string1 [] = ""
 
 val test3_a = longest_string2 ["A","bc","C"] = "bc"
 val test3_b = longest_string2 ["howdy","crabcanon"] = "crabcanon" 
 val test3_c = longest_string2 ["superfabulous", "supersmablous"] = "supersmablous"
+val test3_d = longest_string2 [] = ""
 
 val test4a_a = longest_string3 ["A","bc","C"] = "bc"
 val test4a_b = longest_string3 ["howdy","crabcanon"] = "crabcanon"
 val test4a_c = longest_string3 ["superfabulous","supersmablous"] = "superfabulous"
+val test4a_d = longest_string3 [] = ""
 
 val test4b_a = longest_string4 ["A","bc","C"] = "bc"
 val test4b_b = longest_string4 ["howdy","crabcanon"] = "crabcanon"
 val test4b_c = longest_string4 ["superfabulous","supersmablous"] = "supersmablous"
-val test4b_d= longest_string4 ["A","B","C"] = "C"
+val test4b_d = longest_string4 ["A","B","C"] = "C"
+val test4b_e = longest_string4 [] = ""
 
 val test5_a = longest_capitalized ["A","bc","C"] = "A";
 val test5_b = longest_capitalized ["Epistemology", "Phenomenological"] = "Phenomenological"
@@ -56,8 +60,13 @@ val test9c_c = count_some_var ("x", ConstructorP ("x", UnitP)) = 0
 
 val test10_a = check_pat (Variable("x")) = true
 val test10_b = check_pat (TupleP [(Variable "q"),Wildcard,(Variable "r"),ConstP 2, (Variable "q")]) = false
-(*
-val test11 = match (Const(1), UnitP) = NONE
 
-val test12 = first_match Unit [UnitP] = SOME []
-*)
+val test11_a = match (Const(1), UnitP) = NONE
+val test11_b = match (Constructor("x",Const(3)),ConstructorP("x",Variable("x"))) = SOME [("x",Const(3))]
+val test11_c = match (Unit, Variable("q")) = SOME [("q",Unit)]
+val test11_d = match (Const(2), ConstP(1)) = NONE
+val test11_e = match (Const(3), ConstP(3)) = SOME []
+val test11_f = match (Tuple([Const(1),Const(2)]),TupleP([Variable("x"),Variable("y")])) = SOME [("x",Const(1)),("y",Const(2))]
+
+val test12_a = first_match Unit [UnitP] = SOME []
+val test12_b = first_match (Constructor("egg",Const(4))) [ConstP 4] = NONE
