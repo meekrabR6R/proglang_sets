@@ -11,4 +11,5 @@
   (reverse (seq-helper low null)))
 
 ;; Problem 2
-(define (string-append-map xs suffix) (list "this" "is" "false"))
+(define (string-append-map xs suffix)
+  (map (lambda (s) (string-append s suffix)) xs))
