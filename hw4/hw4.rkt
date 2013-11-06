@@ -13,3 +13,9 @@
 ;; Problem 2
 (define (string-append-map xs suffix)
   (map (lambda (s) (string-append s suffix)) xs))
+
+;; Problem 3
+(define (list-nth-mod xs n)
+  (cond [(< n 0) (error "list-nth-mod: negative number")]
+        [(empty? xs) (error "list-nth-mod: empty list")]
+        [#t (car (list-tail xs (remainder n (length xs))))]))
