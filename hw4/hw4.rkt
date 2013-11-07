@@ -30,7 +30,6 @@
     (reverse (f s (list ) 1))))
 
 ;; Problem 5
-
 (define funny-number-stream 
   (letrec ([f(lambda (n) (cons n (lambda () (f (+ n 1)))))])
   (lambda () (f 1))))
