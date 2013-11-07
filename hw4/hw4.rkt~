@@ -21,17 +21,3 @@
         [#t (car (list-tail xs (remainder n (length xs))))]))
 
 ;; Problem 4
-(define (stream-for-n-steps s n)
-  (letrec ([f (lambda (stream curr-list curr-count)
-                (let ([pr (stream)])
-                  (if (= curr-count n)
-                      (cons (car pr) curr-list)
-                      (f (cdr pr) (cons (car pr) curr-list) (+ 1 curr-count)))))])
-    (reverse (f s (list ) 1))))
-
-;; Problem 5
-
-(define funny-number-stream 
-  (letrec ([f(lambda (n) (cons n (lambda () (f (+ n 1)))))])
-  (lambda () (f 1))))
-  
