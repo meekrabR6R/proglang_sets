@@ -17,8 +17,8 @@
    "Sample tests for Assignment 4"
    
    ; sequence test
-   (check-equal? (sequence 0 5 1) (list 0 1 2 3 4 5) "Sequence test")
-
+   (check-equal? (sequence 0 5 1) (list 0 1 2 3 4 5) "Sequence test 1")
+   (check-equal? (sequence 2 20 2) (list 2 4 6 8 10 12 14 16 18 20) "Sequence test 2")
    ; string-append-map test
    (check-equal? (string-append-map 
                   (list "dan" "dog" "curry" "dog2") 
@@ -34,8 +34,8 @@
    (check-equal? (stream-for-n-steps funny-number-stream 16) (list 1 2 3 4 -5 6 7 8 9 -10 11 12 13 14 -15 16) "funny-number-stream test")
    
    ; dan-then-dog test
-   ;(check-equal? (stream-for-n-steps dan-then-dog 1) (list "dan.jpg") "dan-then-dog test")
-   
+   (check-equal? (stream-for-n-steps dan-then-dog 1) (list "dan.jpg") "dan-then-dog test")
+   (check-equal? (stream-for-n-steps dan-then-dog 4) (list "dan.jpg" "dog.jpg" "dan.jpg" "dog.jpg") "dan-then-dog 4 test")
    ; stream-add-zero test
    ;(check-equal? (stream-for-n-steps (stream-add-zero ones) 1) (list (cons 0 1)) "stream-add-zero test")
    
