@@ -31,7 +31,7 @@
 
 ;; Problem 5
 (define funny-number-stream 
-  (letrec ([f(lambda (n) 
+  (letrec ([f (lambda (n) 
                (cond [(= 0 (modulo (+ 1 n) 5)) (cons n (lambda () (f (* -1 (+ 1 n)))))]
                      [(< n 0) (cons n (lambda () (f (- 1 n))))]
                      [#t (cons n (lambda () (f (+ 1 n))))]))])
@@ -39,8 +39,12 @@
   
 ;; Problem 6
 (define dan-then-dog
-  (letrec ([f(lambda (d)
+  (letrec ([f (lambda (d)
                (if(string=? "dog.jpg" d) 
                   (cons d (lambda () (f "dan.jpg")))
                   (cons d (lambda () (f "dog.jpg")))))])
     (lambda () (f "dan.jpg"))))
+
+;; Problem 7
+(define (stream-add-zero s)
+  (lambda () (cons (cons 0 (car(s))) (stream-add-zero (cdr (s))))))
