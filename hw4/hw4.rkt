@@ -67,4 +67,20 @@
                             [(equal? (car curr-v) v) curr-v]
                             [#t (f (+ n 1))]))))])
     (f 0)))
-                
+
+;; Problem 10
+(define (cached-assoc xs n)
+  (letrec ([memo (make-vector n #f)]
+           [curr-count 0]
+           [f (lambda (x)
+                (let ([va (vector-assoc x memo)]
+                      [a (assoc x  xs)])
+                  (cond [va va]
+                        [a (begin
+                               (vector-set! memo curr-count a)
+                               (set! curr-count (remainder (+ curr-count 1) n))
+                               a)]
+                        [#t #f])))])
+    f))
+ 
+                  
