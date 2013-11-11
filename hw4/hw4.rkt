@@ -22,12 +22,8 @@
 
 ;; Problem 4
 (define (stream-for-n-steps s n)
-  (letrec ([f (lambda (stream curr-list curr-count)
-                (let ([pr (stream)])
-                  (if (= curr-count n)
-                      (cons (car pr) curr-list)
-                      (f (cdr pr) (cons (car pr) curr-list) (+ 1 curr-count)))))])
-    (reverse (f s (list ) 1))))
+  (if (<= n 0) null
+      (cons (car (s)) (stream-for-n-steps (cdr (s)) (- n 1)))))
 
 ;; Problem 5
 (define funny-number-stream 
@@ -73,14 +69,15 @@
   (letrec ([memo (make-vector n #f)]
            [curr-count 0]
            [f (lambda (x)
-                (let ([va (vector-assoc x memo)]
-                      [a (assoc x  xs)])
-                  (cond [va va]
-                        [a (begin
+                  (cond [(vector-assoc x memo)]
+                        [(let ([a (assoc x  xs)])
+                           (if a 
+                             (begin
                                (vector-set! memo curr-count a)
                                (set! curr-count (remainder (+ curr-count 1) n))
-                               a)]
-                        [#t #f])))])
+                               a)
+                               #f))]
+                        [#t #f]))])
     f))
  
                   
