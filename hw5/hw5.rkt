@@ -21,8 +21,10 @@
 (struct closure (env fun) #:transparent) 
 
 ;; Problem 1
-
-;; CHANGE (put your solutions here)
+(define (racketlist->mupllist xs)
+  (if (null? xs)
+      (aunit)
+      (apair (car xs) (racketlist->mupllist (cdr xs)))))
 
 ;; Problem 2
 
