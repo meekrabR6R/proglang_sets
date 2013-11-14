@@ -21,11 +21,16 @@
 (struct closure (env fun) #:transparent) 
 
 ;; Problem 1
+;;(a)
 (define (racketlist->mupllist xs)
   (if (null? xs)
       (aunit)
       (apair (car xs) (racketlist->mupllist (cdr xs)))))
-
+;;(b)
+(define (mupllist->racketlist xs)
+  (match xs
+    [(aunit) null]
+    [(apair e1 e2) (cons e1 (mupllist->racketlist e2))])) 
 ;; Problem 2
 
 ;; lookup a variable in an environment
