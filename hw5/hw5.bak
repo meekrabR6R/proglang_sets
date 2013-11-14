@@ -56,10 +56,6 @@
                        (int-num v2)))
                (error "MUPL addition applied to non-number")))]
         ;; CHANGE add more cases here
-        [(int? e) e]
-        [(apair? e) e]
-        [(aunit? e) e]
-        [(closure? e) e]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
