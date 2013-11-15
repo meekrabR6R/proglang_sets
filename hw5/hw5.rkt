@@ -60,6 +60,22 @@
         [(apair? e) e]
         [(aunit? e) e]
         [(closure? e) e]
+        [(fun? e) (closure (env e))]
+        [(ifgreater? e) 
+         (let ([v1 (eval-under-env (ifgreater-e1 e) env)]
+               [v2 (eval-under-env (ifgreater-e2 e) env)]
+               [v3 (eval-under-env (ifgreater-e3 e) env)]
+               [v4 (eval-under-env (ifgreater-e4 e) env)])
+           (if (and (int? v1)
+                    (int? v2))
+               (if (> (int-num v1)
+                      (int-num v2))
+                   v3
+                   v4)
+           (error "MUPL conditions needs numbers")))]
+        [(mlet? e) 
+         (let ([v (cons (var (mlet-var e)) (mlet-e e))])
+           v)]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
