@@ -56,10 +56,7 @@
                        (int-num v2)))
                (error "MUPL addition applied to non-number")))]
         ;; CHANGE add more cases here
-        [(int? e) e]
-        [(apair? e) e]
-        [(aunit? e) e]
-        [(closure? e) e]
+        [(or (int? e) (aunit? e) (closure? e)) e]
         [(fun? e) (closure (env e))]
         [(ifgreater? e) 
          (let ([v1 (eval-under-env (ifgreater-e1 e) env)]
@@ -74,8 +71,24 @@
                    v4)
            (error "MUPL conditions needs numbers")))]
         [(mlet? e) 
-         (let ([v (cons (var (mlet-var e)) (mlet-e e))])
-           v)]
+         (letrec ([v (cons (mlet-var e) (mlet-e e))]
+                  [new-env (cons v env)])
+           (eval-under-env (mlet-body e) new-env))]
+        [(call? e) e] ;;fill in
+        [(apair? e) 
+         (let ([v1 (eval-under-env (apair-e1 e) env)]
+               [v2 (eval-under-env (apair-e2 e) env)])
+           (apair v1 v2))]
+        [(fst? e)
+         (if (apair? (fst-e e))
+           (eval-under-env (apair-e1 (fst-e e)) env)
+           (error (format "'fst' can only be called MUPL apairs")))]
+        [(snd? e)
+         (if (apair? (snd-e e))
+           (eval-under-env (apair-e2 (snd-e e)) env)
+           (error (format "'snd' can only be called on MUPL apairs")))]
+        [(isaunit? e)
+         (if (aunit? (isaunit-e e)) (int 1) (int 0))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
