@@ -24,10 +24,16 @@ class MyPiece < Piece
   def self.next_piece (board)
     MyPiece.new(All_My_Pieces.sample, board)
   end
+
+  #cheater override
+  def self.cheat_piece (board)
+  	MyPiece.new([[[0,0]]], board)
+  end
 end
 
 class MyBoard < Board
   # your enhancements here
+
   def initialize(game)
   	super(game)
   	@current_block = MyPiece.next_piece(self)
@@ -42,8 +48,12 @@ class MyBoard < Board
   def store_current
     locations = @current_block.current_rotation
     displacement = @current_block.position
-    range = if locations.length == 4
-    	        (0..3)
+    range = if locations.length == 5
+    	        (0..4)
+    	      elsif locations.length == 4
+    	      	(0..3)
+    	      elsif locations.length == 1
+    	      	(0...1)
     	      else
     	      	(0..2)
     	      end
@@ -57,6 +67,17 @@ class MyBoard < Board
     @delay = [@delay - 2, 80].max
   end
 
+  def score
+  	@score
+  end
+
+  def dec_score
+  	@score -= 100
+  end
+
+  def current_block=(block)
+  	@current_block = block
+  end
 end
 
 class MyTetris < Tetris
@@ -77,10 +98,17 @@ class MyTetris < Tetris
 
   def new_key_bindings
   	@root.bind('u', proc { one_eighty })
+  	@root.bind('c', proc { cheat })
   end
 
   private
-
+    def cheat
+      if @board.score >= 100
+      	@board.dec_score
+      	@board.current_block = MyPiece.cheat_piece(@board)
+      end
+    end
+    
     def one_eighty
   	  2.times { @board.rotate_clockwise }
     end
