@@ -18,21 +18,28 @@ class MyPiece < Piece
                [[[0, 0], [-1, 0], [1, 0], [2, 0], [3, 0]], # long (only needs two)
                [[0, 0], [0, -1], [0, 1], [0, 2], [0, 3]]]] 
   # your enhancements here
+  Cheat_Piece = [[[[0, 0]]]]
  
-
+  attr_reader :cheat_next
   # class method to choose the next piece
   def self.next_piece (board)
-    MyPiece.new(All_My_Pieces.sample, board)
+  	if @cheat_next
+  		@cheat_next = false
+  		MyPiece.new(Cheat_Piece[0], board)
+  	else
+      MyPiece.new(All_My_Pieces.sample, board)
+    end
   end
 
   #cheater override
-  def self.cheat_piece (board)
-  	MyPiece.new([[[0,0]]], board)
+  def self.cheat
+    @cheat_next = true
   end
 end
 
 class MyBoard < Board
-  # your enhancements here
+  
+  attr_accessor :score
 
   def initialize(game)
   	super(game)
@@ -43,6 +50,10 @@ class MyBoard < Board
   def next_piece
     @current_block = MyPiece.next_piece(self)
     @current_pos = nil
+  end
+  
+  def cheat_next
+  	@current_block.cheat_next
   end
 
   def store_current
@@ -67,17 +78,6 @@ class MyBoard < Board
     @delay = [@delay - 2, 80].max
   end
 
-  def score
-  	@score
-  end
-
-  def dec_score
-  	@score -= 100
-  end
-
-  def current_block=(block)
-  	@current_block = block
-  end
 end
 
 class MyTetris < Tetris
@@ -103,9 +103,9 @@ class MyTetris < Tetris
 
   private
     def cheat
-      if @board.score >= 100
-      	@board.dec_score
-      	@board.current_block = MyPiece.cheat_piece(@board)
+      if @board.score >= 100 && !@board.cheat_next
+      	@board.score -= 100
+      	MyPiece.cheat
       end
     end
     
