@@ -30,6 +30,7 @@ in
 end;
 
 (* eval_prog tests with Shift*)
+(*
 let 
 	val Point(a,b) = (eval_prog (preprocess_prog (Shift(3.0, 4.0, Point(4.0,4.0))), []))
 	val Point(c,d) = Point(7.0,8.0) 
@@ -59,3 +60,4 @@ in
 	then (print "eval_prog with shadowing 'a' in environment is working properly\n")
 	else (print "eval_prog with shadowing 'a' in environment is not working properly\n")
 end;
+*)
