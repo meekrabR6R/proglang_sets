@@ -30,7 +30,7 @@ class GeometryExpression
   Epsilon = 0.00001
 end
 
-class GeometryValue 
+class GeometryValue < GeometryExpression
   # do *not* change methods in this class definition
   # you can add methods if you wish
 
@@ -117,9 +117,11 @@ class Point < GeometryValue
     @x = x
     @y = y
   end
+ 
   def eval_prog env 
     self # TODO
   end
+  
   def preprocess_prog
     self 
   end
@@ -128,22 +130,45 @@ class Point < GeometryValue
     Point.new(@x + dx, @y + dy)
   end
   def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
+    other.intersectPoint self
   end
   def intersectPoint p
-    self # intersection with point and no-points is no-points
+    if real_close_point(@x, @y, p.x, p.y)
+      Point.new(@x, @y)
+    else
+      NoPoints.new
+    end
   end
+
   def intersectLine line
-    self # intersection with line and no-points is no-points
+    if real_close(@y, (line.m * @x) + line.b)
+      Point.new(@x, @y)
+    else
+      NoPoints.new
+    end
   end
+
   def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
+    if real_close(@x, vline.x)
+      Point.new(@x, @y)
+    else
+      NoPoints.new
+    end
   end
+  
   # if self is the intersection of (1) some shape s and (2) 
   # the line containing seg, then we return the intersection of the 
   # shape s and the seg.  seg is an instance of LineSegment
   def intersectWithSegmentAsLineResult seg
-    self
+    x1 = [seg.x1, seg.x2].min - Epsilon
+    x2 = [seg.x1, seg.x2].max + Epsilon
+    y1 = [seg.y1, seg.y2].min - Epsilon
+    y2 = [seg.y1, seg.y2].max + Epsilon
+    if @x.between?(x1, x2) and @y.between?(y1, y2)
+      Point.new(@x, @y)
+    else
+      NoPoints.new
+    end
   end
 
 end
@@ -166,25 +191,40 @@ class Line < GeometryValue
   end
 
   def shift(dx,dy)
-    self # shifting no-points is no-points
+    Line.new(@m, ((@b + dy) - (@m * dx)))
   end
+
   def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
+    other.intersectLine self # will be NoPoints but follow double-dispatch
   end
+
   def intersectPoint p
-    self # intersection with point and no-points is no-points
+    p.intersectLine self
   end
+
   def intersectLine line
-    self # intersection with line and no-points is no-points
+    if real_close(@m, line.m)
+      if real_close(@b, line.b) 
+        Line.new(@m, @b) 
+      else  
+        NoPoints.new
+      end
+    else 
+      x = (line.b - @b) / (@m - line.m)
+      y = @m * x + @b
+      Point.new(x,y)
+    end
   end
+
   def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
+    Point.new(vline.x, @m * vline.x + @b)
   end
+
   # if self is the intersection of (1) some shape s and (2) 
   # the line containing seg, then we return the intersection of the 
   # shape s and the seg.  seg is an instance of LineSegment
   def intersectWithSegmentAsLineResult seg
-    self
+    seg
   end
 
 end
@@ -206,25 +246,34 @@ class VerticalLine < GeometryValue
   end
   
   def shift(dx,dy)
-    self # shifting no-points is no-points
+    VerticalLine.new(@x + dx)
   end
+
   def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
+    other.intersectVerticalLine self
   end
+
   def intersectPoint p
-    self # intersection with point and no-points is no-points
+    p.intersectVerticalLine self
   end
+
   def intersectLine line
-    self # intersection with line and no-points is no-points
+    line.intersectVerticalLine self
   end
+
   def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
+    if real_close(@x, vline.x)
+      VerticalLine.new(@x)
+    else 
+      NoPoints.new 
+    end
   end
+  
   # if self is the intersection of (1) some shape s and (2) 
   # the line containing seg, then we return the intersection of the 
   # shape s and the seg.  seg is an instance of LineSegment
   def intersectWithSegmentAsLineResult seg
-    self
+    seg
   end
 end
 
@@ -261,23 +310,35 @@ class LineSegment < GeometryValue
   def shift(dx,dy)
     LineSegment.new(@x1 + dx, @y1 + dy, @x2 + dx, @y2 + dy)
   end
+  
   def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
+    other.intersectLineSegment self # will be NoPoints but follow double-dispatch
   end
+  
   def intersectPoint p
-    self # intersection with point and no-points is no-points
+    p.intersectLineSegment self
   end
+  
   def intersectLine line
-    self # intersection with line and no-points is no-points
+    line.intersectLineSegment self
   end
+  
   def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
+    vline.intersectLineSegment self
   end
   # if self is the intersection of (1) some shape s and (2) 
   # the line containing seg, then we return the intersection of the 
   # shape s and the seg.  seg is an instance of LineSegment
   def intersectWithSegmentAsLineResult seg
-    self
+    tx1 = [@x1, seg.x1].max
+    tx2 = [@x2, seg.x2].min
+    ty1 = [@y1, seg.y1].max
+    ty2 = [@y2, seg.y2].min
+    if tx1 > tx2 or ty1 > ty2
+      NoPoints.new
+    else
+      LineSegment.new(tx1, ty1, tx2, ty2)
+    end
   end
 
 end
@@ -300,29 +361,6 @@ class Intersect < GeometryExpression
   def preprocess_prog
     Intersect.new(@e1.preprocess_prog, @e2.preprocess_prog)
   end
-  
-  def shift(dx,dy)
-    self # shifting no-points is no-points
-  end
-  def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
-  end
-  def intersectPoint p
-    self # intersection with point and no-points is no-points
-  end
-  def intersectLine line
-    self # intersection with line and no-points is no-points
-  end
-  def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
-  end
-  # if self is the intersection of (1) some shape s and (2) 
-  # the line containing seg, then we return the intersection of the 
-  # shape s and the seg.  seg is an instance of LineSegment
-  def intersectWithSegmentAsLineResult seg
-    self
-  end
-
 end
 
 class Let < GeometryExpression
@@ -338,33 +376,11 @@ class Let < GeometryExpression
   #Let(s,e1,e2) => eval_prog (e2, ((s, eval_prog(e1,env)) :: env))
   def eval_prog env 
     new_env = env.dup
-    @e2.eval_prog(new_env << [@s, @e1.eval_prog(new_env)])
+    @e2.eval_prog(new_env.unshift([@s, @e1.eval_prog(new_env)]))
   end  
   
   def preprocess_prog
     Let.new(@s, @e1.preprocess_prog, @e2.preprocess_prog)
-  end
-  
-  def shift(dx,dy)
-    self # shifting no-points is no-points
-  end
-  def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
-  end
-  def intersectPoint p
-    self # intersection with point and no-points is no-points
-  end
-  def intersectLine line
-    self # intersection with line and no-points is no-points
-  end
-  def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
-  end
-  # if self is the intersection of (1) some shape s and (2) 
-  # the line containing seg, then we return the intersection of the 
-  # shape s and the seg.  seg is an instance of LineSegment
-  def intersectWithSegmentAsLineResult seg
-    self
   end
 end
 
@@ -382,28 +398,6 @@ class Var < GeometryExpression
   end
 
   def preprocess_prog
-    self
-  end
-  
-  def shift(dx,dy)
-    self # shifting no-points is no-points
-  end
-  def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
-  end
-  def intersectPoint p
-    self # intersection with point and no-points is no-points
-  end
-  def intersectLine line
-    self # intersection with line and no-points is no-points
-  end
-  def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
-  end
-  # if self is the intersection of (1) some shape s and (2) 
-  # the line containing seg, then we return the intersection of the 
-  # shape s and the seg.  seg is an instance of LineSegment
-  def intersectWithSegmentAsLineResult seg
     self
   end
 end
